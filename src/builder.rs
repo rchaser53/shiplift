@@ -643,10 +643,9 @@ impl ContainerOptionsBuilder {
     }
 
     /// enable all exposed ports on the container to be mapped to random, available, ports on the host
-    pub fn publish_all_ports(
-        &mut self,
-    ) -> &mut Self {
-        self.params.insert("HostConfig.PublishAllPorts", json!(true));
+    pub fn publish_all_ports(&mut self) -> &mut Self {
+        self.params
+            .insert("HostConfig.PublishAllPorts", json!(true));
         self
     }
 
@@ -938,14 +937,14 @@ impl ExecContainerOptions {
 
         for (k, v) in &self.params {
             body.insert(
-                k.to_string(),
+                (*k).to_string(),
                 serde_json::to_value(v).map_err(Error::SerdeJsonError)?,
             );
         }
 
         for (k, v) in &self.params_bool {
             body.insert(
-                k.to_string(),
+                (*k).to_string(),
                 serde_json::to_value(v).map_err(Error::SerdeJsonError)?,
             );
         }
